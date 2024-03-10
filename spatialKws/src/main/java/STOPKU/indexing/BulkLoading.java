@@ -429,7 +429,7 @@ public class BulkLoading {
     public static void var_height_boolean_range(int[] heights) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
-        System.out.println("exploring how the size of the width of the range affect query time");
+        System.out.println("exploring how the size of the height of the range affect query time");
         System.out.println("the following is POWER results");
         for(int height : heights)
         {
