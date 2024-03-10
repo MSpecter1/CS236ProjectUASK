@@ -39,12 +39,13 @@ public class BulkLoading {
 
     public static int default_or_kws = 2;
 
+    public static int default_width = 30;
+    public static int default_height = 30;
+
 
     public static ArrayList<SpatialTweet> test_lists = new ArrayList<>();
 
     public static void main(String args[]) throws IOException, InterruptedException {
-
-
 
         int[] data_sizes = new int[]{2000000, 4000000};
         int[] depths = new int[]{5 , 10 , 15 ,20 , 25};
@@ -64,47 +65,43 @@ public class BulkLoading {
 
         Tools.init();
 
-        //----- the following performs parameter tuning experiments
+        // ----- the following performs parameter tuning experiments
         // var_capacity_indexing_time(capacities);
-    //     var_spatial_division_indexing_time(spatial_divs);
-    //     var_dsize_indexing_time(data_sizes);
-    //     var_depth_indexing_time(depths);
+        // var_spatial_division_indexing_time(spatial_divs);
+        // var_dsize_indexing_time(data_sizes);
+        // var_depth_indexing_time(depths);
 
-    //     var_spatial_div_query_time(spatial_divs);
-    //     var_capacity_query_time(capacities);
-    //     var_depth_query_time(depths);
-    //     var_datasize_query_time(data_sizes);
-    //     var_threshold_query_time(thresholds);
-    //     var_buffersize_query_time(buffer_sizes);
-    //     var_threadnum_query_time(thread_nums);
-    //     default_thread_num = 1;
-    //     System.out.println("current thread num is " + default_thread_num);
-    //     var_k_query_time(ks);
-    //     default_thread_num = 2;
-    //     System.out.println("current thread num is " + default_thread_num);
-    //     var_k_query_time(ks);
-    //     default_thread_num = 4;
-    //     System.out.println("current thread num is " + default_thread_num);
-    //     var_k_query_time(ks);
-    //     default_thread_num = 8;
-    //     System.out.println("current thread num is " + default_thread_num);
-    //     var_k_query_time(ks);
-
-
-
-    //    //----------------the following exams the topk-knn query
-
-    //     var_pos_query_time(pos_kws );
-    //     var_neg_query_time(neg_seq);
-    //     var_negNum_query_time(neg_num);
-    //     var_k_query_time(ks);
-    //     var_alpha_query_time(alphas);
-    //     var_datasize_query_time(data_sizes);
+        // var_spatial_div_query_time(spatial_divs);
+        // var_capacity_query_time(capacities);
+        // var_depth_query_time(depths);
+        // var_datasize_query_time(data_sizes);
+        // var_threshold_query_time(thresholds);
+        // var_buffersize_query_time(buffer_sizes);
+        // var_threadnum_query_time(thread_nums);
+        // default_thread_num = 1;
+        // System.out.println("current thread num is " + default_thread_num);
+        // var_k_query_time(ks);
+        // default_thread_num = 2;
+        // System.out.println("current thread num is " + default_thread_num);
+        // var_k_query_time(ks);
+        // default_thread_num = 4;
+        // System.out.println("current thread num is " + default_thread_num);
+        // var_k_query_time(ks);
+        // default_thread_num = 8;
+        // System.out.println("current thread num is " + default_thread_num);
+        // var_k_query_time(ks);
 
 
 
-    //     //-----------------the following exams the boolean knn
+       //----------------the following exams the topk-knn query
+        // var_pos_query_time(pos_kws );
+        // var_neg_query_time(neg_seq);
+        // var_negNum_query_time(neg_num);
+        // var_k_query_time(ks);
+        // var_alpha_query_time(alphas);
+        // var_datasize_query_time(data_sizes);
 
+        
         ks = new int[]{10 , 30 , 50 , 70 , 90};
         pos_kws = new int[]{1 ,2,3,4};
         neg_seq = new int[]{1,2,3,4};
@@ -112,6 +109,10 @@ public class BulkLoading {
         or_kws = new int[]{1,2,3,4};
         default_pos_kws = 2;
 
+        int[] width = new int[]{10,20,30,40,50};
+        int[] height = new int[]{10,20,30,40,50};
+        
+        //-----------------the following exams the boolean knn
         // var_andkws_booleanKNN(pos_kws);
         // var_orkws_booleanKNN(or_kws);
         // var_notseq_booleanKNN(neg_seq);
@@ -120,53 +121,337 @@ public class BulkLoading {
         // var_datasize_booleanKNN(data_sizes);
 
         // range queries
-        // var_andkws_booleanrange(pos_kws);
+        System.out.println("\t==== var_andkws_boolean_range(pos_kws) ====");
+        var_andkws_boolean_range(pos_kws);
+        System.out.println("\t==== var_orkws_boolean_range(or_kws) ====");
+        var_orkws_boolean_range(or_kws);
+        System.out.println("\t==== var_notseq_boolean_range(neg_seq) ====");
+        var_notseq_boolean_range(neg_seq);
+        System.out.println("\t==== var_notNumeq_boolean_range(neg_num) ====");
+        var_notNum_boolean_range(neg_num);
+        System.out.println("\t==== var_k_boolean_range(ks) ====");
+        var_k_boolean_range(ks);
+        System.out.println("\t==== var_datasize_boolean_range(data_sizes) ====");
+        var_datasize_boolean_range(data_sizes);
 
-        System.gc();
-        System.out.println("Starting Test:\n");
-        ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , 1 , default_neg_len , default_neg_num  , default_or_kws , default_query_num);
-        OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
-        
-        int count = 0;
-        for (QueryAttrRange qa : qas)
-        {
-            if (count==1) // RUN ONCE
-                break;
-
-            System.out.println("QUERY:");
-            System.out.println("COORDINATES: "+qa.lat1+" "+qa.lat2+" "+qa.lon1+" "+qa.lon2);
-            System.out.println("POS KWS: ");
-            for (String x : qa.pos_keywords){
-                System.out.println("\t"+x);
-            }
-            System.out.println("NEG KWS: ");
-            for (String[] x : qa.neg_phrases){
-                System.out.print("\t");
-                for (String i : x){
-                    System.out.print(i+" ");
-                }
-                System.err.println();
-            }
-            System.out.println("OR KWS: ");
-            for (String x : qa.or_keywords){
-                System.out.println("\t"+x);
-            }
-
-            QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
-            ArrayList<ResultTweet> result = qp.process_query_range(qi);
-            // System.out.println(result);
-            
-            // CHECK RESULT TWEETS
-            for (ResultTweet rtweet : result){
-                System.out.println(rtweet.get_tid());
-            } 
-
-            count++;
-        }
-        System.gc();
-
+        System.out.println("\t==== var_width_boolean_range(data_sizes) ====");
+        var_width_boolean_range(width);
+        System.out.println("\t==== var_height_boolean_range(data_sizes) ====");
+        var_height_boolean_range(height);
 
     }
+
+
+
+    public static ArrayList<QueryAttrRange> get_booleanrange_query_inst(int dataset_len , int pos_kw_len , int neg_kw_len , int neg_kew_num ,  int or_kw_len , int num_query, int width, int height) throws IOException {
+        ArrayList<QueryAttrRange> qas = new ArrayList<>();
+
+        ArrayList<String[]> and_kws = new ArrayList<>();
+        ArrayList<String[]> neg_seq = new ArrayList<>();
+        ArrayList<String[]> or_kws = new ArrayList<>();
+
+        ArrayList<Double> lats1 = new ArrayList<>();
+        ArrayList<Double> lats2 = new ArrayList<>();
+        ArrayList<Double> lons1 = new ArrayList<>();
+        ArrayList<Double> lons2 = new ArrayList<>();
+
+        BufferedReader reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + (pos_kw_len + or_kw_len) + ".txt"));
+        String line;
+        int count = 0;
+        while((line = reader.readLine()) != null && !line.equals(""))
+        {
+            count++;
+            if(count == 100)
+            {
+                break;
+            }
+            String[] ret = line.split(" ");
+            String[] pos_kwd = new String[pos_kw_len];
+
+            for(int i = 0 ; i < pos_kw_len ; i++)
+            {
+                pos_kwd[i] = ret[i + 2];
+            }
+            and_kws.add(pos_kwd);
+
+        }
+        reader.close();
+
+        reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + (pos_kw_len + or_kw_len) + ".txt"));
+        //maybe we need to remove stopwords twice
+        count = 0;
+
+
+        while((line = reader.readLine()) != null && !line.equals(""))
+        {
+            count++;
+            if(count == 100)
+            {
+                break;
+            }
+            String[] ret = line.split(" ");
+            String[] or_kwd = new String[or_kw_len];
+
+            for(int i = 0 ; i < or_kw_len ; i++)
+            {
+                or_kwd[i] = ret[i + 2 + pos_kw_len];
+            }
+
+            or_kws.add(or_kwd);
+
+        }
+        reader.close();
+
+
+        reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + neg_kw_len + ".txt"));
+        //maybe we need to remove stopwords twice
+        while((line = reader.readLine()) != null && !line.equals(""))
+        {
+            String[] ret = line.split(" ");
+            String[] neg_kwd = new String[neg_kw_len];
+            for(int i = 0 ; i < neg_kw_len ; i++)
+            {
+                neg_kwd[i] = ret[i + 2];
+            }
+            neg_seq.add(neg_kwd);
+            lats1.add(Double.parseDouble(ret[0]));
+            lons1.add(Double.parseDouble(ret[1]));
+            //  add max lat and lon, setting 50 for now
+            lats2.add((double) Double.parseDouble(ret[0])+height);
+            lons2.add((double) Double.parseDouble(ret[1])+width);
+        }
+        reader.close();
+
+
+        for(int i = 0 ; i < num_query ; i++)
+        {
+            int j = i % and_kws.size();
+            ArrayList<String[]> neg_phrases = new ArrayList<>();
+            for(int p = 0 ; p < neg_kew_num ; p++)
+            {
+                neg_phrases.add(neg_seq.get(i * neg_kew_num + p));
+            }
+            // creates new ranged query with a min lat, max lat, min lon, max lon 
+            QueryAttrRange qa = new QueryAttrRange(lats1.get(i) , lons1.get(i) , lats2.get(i) , lons2.get(i), and_kws.get(j) , neg_phrases , or_kws.get(j));
+            qas.add(qa);
+        }
+
+
+        return qas;
+
+    }
+
+
+    // ================ Boolean Range Query Evaluation Functions ================
+    public static void var_andkws_boolean_range(int[] poskws) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the number of and kws affect query time");
+        System.out.println("the following is POWER results");
+        for(int pos_len : poskws)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , pos_len , default_neg_len , default_neg_num  , default_or_kws , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("num of and words is " + pos_len + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_orkws_boolean_range(int[] orkws) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the number of or kws affect query time");
+        System.out.println("the following is POWER results");
+        for(int or_len : orkws)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , default_pos_kws , default_neg_len, default_neg_num,  or_len , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("num of or words is " + or_len + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_notseq_boolean_range(int[] notseq) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the number of neg kws affect query time");
+        System.out.println("the following is POWER results");
+        for(int not_len : notseq)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , default_pos_kws , not_len , default_neg_num , default_or_kws , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("negative sequence len is  " + not_len + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_notNum_boolean_range(int[] notNum) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the number of neg kws affect query time");
+        System.out.println("the following is POWER results");
+        for(int not_num : notNum)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , default_pos_kws , default_neg_len , not_num , default_or_kws , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("negative sequence number is  " + not_num + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_k_boolean_range(int[] ks) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the k affect query time");
+        System.out.println("the following is POWER results");
+        for (int k : ks) {
+            if(k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size, default_pos_kws, default_neg_len , default_neg_num, default_or_kws , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size, default_capacity, default_depth, default_spatial_division), default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas) {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, k, qa.or_keywords, default_threshold);
+                qp.process_query_range(qi);
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("current k is " + k + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_datasize_boolean_range(int[] datasets) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the size of dataset affect query time");
+        System.out.println("the following is POWER");
+        for(int dataset : datasets)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(dataset , default_pos_kws , default_neg_len ,  default_neg_num, default_or_kws , default_query_num, default_width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(dataset , default_capacity , default_depth , default_spatial_division) , default_thread_num , default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha , default_k , qa.or_keywords , default_threshold);
+                qp.process_query_range(qi);
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("current dataset is " + dataset + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_width_boolean_range(int[] widths) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the size of the width of the range affect query time");
+        System.out.println("the following is POWER results");
+        for(int width : widths)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , default_pos_kws , default_neg_len , default_neg_num  , default_or_kws , default_query_num, width, default_height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("current width is " + width + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    }
+
+    public static void var_height_boolean_range(int[] heights) throws IOException {
+        System.gc();
+        System.out.println("-------------------------------------------------");
+        System.out.println("exploring how the size of the width of the range affect query time");
+        System.out.println("the following is POWER results");
+        for(int height : heights)
+        {
+            if(default_k < 100)
+            {
+                default_thread_num = 1;
+            }
+            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , default_pos_kws , default_neg_len , default_neg_num  , default_or_kws , default_query_num, default_width, height);
+            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
+            long start_time = System.currentTimeMillis();
+            for (QueryAttrRange qa : qas)
+            {
+                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
+                qp.process_query_range(qi);
+            }
+            long end_time = System.currentTimeMillis();
+            long avg_time = (end_time - start_time) / qas.size();
+            System.out.println("current height is " + height + " the average runtime is " + avg_time);
+        }
+        System.gc();
+    } 
+
 
 
 
@@ -300,7 +585,6 @@ public class BulkLoading {
 
     }
 
-
     public static void var_negNum_query_time(int[] negkwsNum) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
@@ -425,7 +709,6 @@ public class BulkLoading {
         System.gc();
     }
 
-
     public static void var_alpha_query_time(double[] alphas) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
@@ -488,7 +771,6 @@ public class BulkLoading {
         }
         System.gc();
     }
-
 
     public static void var_threadnum_query_time(int[] threadnums) throws IOException {
         System.gc();
@@ -620,7 +902,6 @@ public class BulkLoading {
         System.gc();
     }
 
-
     public static void var_datasize_query_time(int[] datasets) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
@@ -683,8 +964,6 @@ public class BulkLoading {
         }
         System.gc();
     }
-
-
 
     public static void var_dsize_indexing_time(int[] data_sizes) throws IOException
     {
@@ -899,7 +1178,6 @@ public class BulkLoading {
         System.gc();
     }
 
-
     public static void var_spatial_division_indexing_time(int[] spatial_division) throws IOException {
         System.gc();
         System.out.println("exploring how spatial_division  affects the indexing time");
@@ -949,7 +1227,6 @@ public class BulkLoading {
         }
         System.gc();
     }
-
 
     public static void var_threshold_query_time(double[] thresholds) throws IOException {
         System.gc();
@@ -1071,7 +1348,6 @@ public class BulkLoading {
         System.gc();
     }
 
-
     public static void var_notNum_booleanKNN(int[] notNum) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
@@ -1099,7 +1375,6 @@ public class BulkLoading {
         System.gc();
     }
 
-
     public static void var_k_booleanKNN(int[] ks) throws IOException {
         System.gc();
         System.out.println("-------------------------------------------------");
@@ -1123,7 +1398,6 @@ public class BulkLoading {
         }
         System.gc();
     }
-
 
     public static void var_datasize_booleanKNN(int[] datasets) throws IOException {
         System.gc();
@@ -1575,8 +1849,6 @@ public class BulkLoading {
         }
     }
 
-
-
     public static void indexing(String dir , int capacity , int depth , int batch_size , int dataset_size , int spatial_division) throws IOException {
 
         Node.current_node_id = 0;
@@ -1654,8 +1926,6 @@ public class BulkLoading {
 
     }
 
-
-
     public static double[] truncate_coordinates(String coordinates)
     {
         double[] loc = new double[2];
@@ -1725,32 +1995,7 @@ public class BulkLoading {
         return file.delete();
     }
 
-    //-----------------------------------------------------------------
-    public static void var_andkws_booleanrange(int[] poskws) throws IOException {
-        System.gc();
-        System.out.println("-------------------------------------------------");
-        System.out.println("exploring how the number of and kws affect query time");
-        System.out.println("the following is POWER results");
-        for(int pos_len : poskws)
-        {
-            if(default_k < 100)
-            {
-                default_thread_num = 1;
-            }
-            ArrayList<QueryAttrRange> qas = get_booleanrange_query_inst(default_data_size , pos_len , default_neg_len , default_neg_num  , default_or_kws , default_query_num);
-            OptQueryProcessor qp = new OptQueryProcessor(ReadFromDisk.read_quad_tree(default_data_size , default_capacity , default_depth , default_spatial_division) , default_thread_num, default_spatial_buffer_size);
-            long start_time = System.currentTimeMillis();
-            for (QueryAttrRange qa : qas)
-            {
-                QueryInstanceRange qi = new QueryInstanceRange(qa.lat1, qa.lat2, qa.lon1, qa.lon2, qa.pos_keywords, qa.neg_phrases, default_alpha, default_k , qa.or_keywords,  default_threshold);
-                qp.process_query_range(qi);
-            }
-            long end_time = System.currentTimeMillis();
-            long avg_time = (end_time - start_time) / qas.size();
-            System.out.println("num of and words is " + pos_len + " the average runtime is " + avg_time);
-        }
-        System.gc();
-    }
+    
 
     static class QueryAttrRange
     {
@@ -1781,104 +2026,6 @@ public class BulkLoading {
             this.neg_phrases = neg_phrases;
             this.or_keywords = or_keywords;
         }
-    }
-
-    public static ArrayList<QueryAttrRange> get_booleanrange_query_inst(int dataset_len , int pos_kw_len , int neg_kw_len , int neg_kew_num ,  int or_kw_len , int num_query) throws IOException {
-        ArrayList<QueryAttrRange> qas = new ArrayList<>();
-
-        ArrayList<String[]> and_kws = new ArrayList<>();
-        ArrayList<String[]> neg_seq = new ArrayList<>();
-        ArrayList<String[]> or_kws = new ArrayList<>();
-
-        ArrayList<Double> lats1 = new ArrayList<>();
-        ArrayList<Double> lats2 = new ArrayList<>();
-        ArrayList<Double> lons1 = new ArrayList<>();
-        ArrayList<Double> lons2 = new ArrayList<>();
-
-        BufferedReader reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + (pos_kw_len + or_kw_len) + ".txt"));
-        String line;
-        int count = 0;
-        while((line = reader.readLine()) != null && !line.equals(""))
-        {
-            count++;
-            if(count == 100)
-            {
-                break;
-            }
-            String[] ret = line.split(" ");
-            String[] pos_kwd = new String[pos_kw_len];
-
-            for(int i = 0 ; i < pos_kw_len ; i++)
-            {
-                pos_kwd[i] = ret[i + 2];
-            }
-            and_kws.add(pos_kwd);
-
-        }
-        reader.close();
-
-        reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + (pos_kw_len + or_kw_len) + ".txt"));
-        //maybe we need to remove stopwords twice
-        count = 0;
-
-
-        while((line = reader.readLine()) != null && !line.equals(""))
-        {
-            count++;
-            if(count == 100)
-            {
-                break;
-            }
-            String[] ret = line.split(" ");
-            String[] or_kwd = new String[or_kw_len];
-
-            for(int i = 0 ; i < or_kw_len ; i++)
-            {
-                or_kwd[i] = ret[i + 2 + pos_kw_len];
-            }
-
-            or_kws.add(or_kwd);
-
-        }
-        reader.close();
-
-
-        reader = new BufferedReader(new FileReader("pdata/" + "kws"  + dataset_len + "/" + neg_kw_len + ".txt"));
-        //maybe we need to remove stopwords twice
-        while((line = reader.readLine()) != null && !line.equals(""))
-        {
-            String[] ret = line.split(" ");
-            String[] neg_kwd = new String[neg_kw_len];
-            for(int i = 0 ; i < neg_kw_len ; i++)
-            {
-                neg_kwd[i] = ret[i + 2];
-            }
-            neg_seq.add(neg_kwd);
-            lats1.add(Double.parseDouble(ret[0]));
-            lons1.add(Double.parseDouble(ret[1]));
-            //  add max lat and lon, setting 50 for now
-            lats2.add((double) Double.parseDouble(ret[0])+50);
-            lons2.add((double) Double.parseDouble(ret[1])+50);
-        }
-        reader.close();
-
-
-        for(int i = 0 ; i < num_query ; i++)
-        {
-            int j = i % and_kws.size();
-            ArrayList<String[]> neg_phrases = new ArrayList<>();
-            for(int p = 0 ; p < neg_kew_num ; p++)
-            {
-                neg_phrases.add(neg_seq.get(i * neg_kew_num + p));
-            }
-            // creates new ranged query with a min lat, max lat, min lon, max lon 
-            QueryAttrRange qa = new QueryAttrRange(lats1.get(i) , lons1.get(i) , lats2.get(i) , lons2.get(i), and_kws.get(j) , neg_phrases , or_kws.get(j));
-            qas.add(qa);
-        }
-
-
-        return qas;
-
     }
 
 
