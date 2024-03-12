@@ -469,6 +469,8 @@ public class BulkLoading {
         System.gc();
     } 
 
+
+    // lat1,lat2,long1,long2|positive,keyrwords|negative,phrase1=negative,phrase2|or,keywords
     public static void saveToFile(String name, int num, ArrayList<QueryAttrRange> qas) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("queries/" + name + num + ".txt"));
