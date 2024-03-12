@@ -134,9 +134,9 @@ public class BulkLoading {
         System.out.println("\t==== var_datasize_boolean_range(data_sizes) ====");
         var_datasize_boolean_range(data_sizes);
 
-        System.out.println("\t==== var_width_boolean_range(data_sizes) ====");
+        System.out.println("\t==== var_width_boolean_range(width) ====");
         var_width_boolean_range(width);
-        System.out.println("\t==== var_height_boolean_range(data_sizes) ====");
+        System.out.println("\t==== var_height_boolean_range(height) ====");
         var_height_boolean_range(height);
 
     }
@@ -248,6 +248,7 @@ public class BulkLoading {
         System.out.println("-------------------------------------------------");
         System.out.println("exploring how the number of and kws affect query time");
         System.out.println("the following is POWER results");
+        String fileName = "andkws";
         for(int pos_len : poskws)
         {
             if(default_k < 100)
@@ -265,6 +266,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("num of and words is " + pos_len + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("andkws", pos_len, qas);
         }
         System.gc();
     }
@@ -292,6 +295,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("num of or words is " + or_len + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("orkws", or_len, qas);
         }
         System.gc();
     }
@@ -319,6 +324,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("negative sequence len is  " + not_len + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("notseq", not_len, qas);
         }
         System.gc();
     }
@@ -346,6 +353,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("negative sequence number is  " + not_num + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("notNum", not_num, qas);
         }
         System.gc();
     }
@@ -370,6 +379,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current k is " + k + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("k", k, qas);
         }
         System.gc();
     }
@@ -396,6 +407,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current dataset is " + dataset + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("datasize", dataset, qas);
         }
         System.gc();
     }
@@ -422,6 +435,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current width is " + width + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("width", width, qas);
         }
         System.gc();
     }
@@ -448,9 +463,59 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current height is " + height + " the average runtime is " + avg_time);
+            // System.out.println("Saving...");
+            // saveToFile("height", height, qas);
         }
         System.gc();
     } 
+
+    public static void saveToFile(String name, int num, ArrayList<QueryAttrRange> qas) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("queries/" + name + num + ".txt"));
+
+            String line = "";
+            for(QueryAttrRange qa : qas) {
+                // lat1, lat2, lon1, lon2
+                line = "" + qa.lat1 + "," + qa.lat2 + "," + qa.lon1 + "," + qa.lon2 + "|";
+
+                // positive keywords
+                for(String kwd : qa.pos_keywords) {
+                    line = line + kwd + ",";
+                }
+                line = line.substring(0, line.length()-1);
+                line = line + "|";
+
+                // negative phrases
+                for(String[] keywords : qa.neg_phrases) {
+                    for(String kwd : keywords) {
+                        line = line + kwd + ",";
+                    }
+                    line = line.substring(0, line.length()-1);
+                    line = line + "=";
+                }
+                line = line.substring(0, line.length()-1);
+                line = line + "|";
+
+                // or keywords
+                for(String kwd : qa.or_keywords) {
+                    line = line + kwd + ",";
+                }
+                line = line.substring(0, line.length()-1);
+                
+                line = line + "\n";
+
+                writer.write(line);
+            }
+
+
+            writer.close();
+        } catch (IOException e) {
+            System.err.println("[IOException error] " + name + " " + num);
+            e.printStackTrace();
+        }
+        
+    }
+
 
 
 
