@@ -266,8 +266,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("num of and words is " + pos_len + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("andkws", pos_len, qas);
+            saveToFile("andkws", pos_len, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -295,8 +295,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("num of or words is " + or_len + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("orkws", or_len, qas);
+            saveToFile("orkws", or_len, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -324,8 +324,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("negative sequence len is  " + not_len + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("notseq", not_len, qas);
+            saveToFile("notseq", not_len, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -353,8 +353,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("negative sequence number is  " + not_num + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("notNum", not_num, qas);
+            saveToFile("notNum", not_num, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -379,8 +379,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current k is " + k + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("k", k, qas);
+            saveToFile("k", k, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -407,8 +407,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current dataset is " + dataset + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("datasize", dataset, qas);
+            saveToFile("datasize", dataset, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -435,8 +435,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current width is " + width + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("width", width, qas);
+            saveToFile("width", width, qas);
+            System.out.println("Saved");
         }
         System.gc();
     }
@@ -463,8 +463,8 @@ public class BulkLoading {
             long end_time = System.currentTimeMillis();
             long avg_time = (end_time - start_time) / qas.size();
             System.out.println("current height is " + height + " the average runtime is " + avg_time);
-            // System.out.println("Saving...");
-            // saveToFile("height", height, qas);
+            saveToFile("height", height, qas);
+            System.out.println("Saved");
         }
         System.gc();
     } 

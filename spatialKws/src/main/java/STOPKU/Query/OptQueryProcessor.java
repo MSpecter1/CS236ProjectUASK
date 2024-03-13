@@ -101,7 +101,7 @@ public class OptQueryProcessor {
                         if(!processed.contains(neigh_n) && !processing_nodes.contains(neigh_n))
                         {
                             // check for overlap with range query
-                            if (!(neigh_n.get_min_lat()>lat2) || !(neigh_n.get_max_lat()<lat1) || !(neigh_n.get_min_lon()>lon2) || !(neigh_n.get_max_lon()<lon1))
+                            if (!((neigh_n.get_min_lat()>lat2) || (neigh_n.get_max_lat()<lat1) || (neigh_n.get_min_lon()>lon2) || (neigh_n.get_max_lon()<lon1)))
                             {
                                 processing_nodes.add(neigh_n);
                             }
