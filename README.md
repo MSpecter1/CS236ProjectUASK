@@ -28,7 +28,7 @@ The main file has different instructions to make the calls both to build the ind
 
 ### How to run cbik
 * In terminal, run make and then ./program.
-* Before, compiling and running, download this [data](https://drive.google.com/drive/folders/1lAkW3duGurApECYMUJRFM25sR3xFfL8v?usp=sharing) into the cBiK folder and unzip it.  
+* Before, compiling and running, download this [data](https://drive.google.com/drive/folders/10yG-N5oB2x4o6MjYCf29T95-ln9LzsE0?usp=sharing) into the cBiK folder and unzip it.  
 * Uncomment or comment the push_back() functions (starting line 128) on vector queryFiles to run the queries that you desire.
 * Change the name of dataSet on line 175, to use either data files in tweet2000000 or tweet4000000.
 * Modify the for loop in line 174 to i <= 39 for tweet4000000 and i <= 19 for tweet2000000.
