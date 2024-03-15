@@ -3,8 +3,6 @@
 Compact data structure to solve spatio-textual queries (Boolean kNN, Ranked kNN and Range Searching).
 The main file has different instructions to make the calls both to build the index and to execute the queries found in the Build_cBiK file.
 
-### The datasets to be tested must have the following format
-
 ### The queries format to Range Searching:
 
 **Latitude1 Longitude1 Latitude2 Longitude2 Keywords**
