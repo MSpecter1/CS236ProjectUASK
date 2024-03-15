@@ -169,10 +169,10 @@ int main(int argc, char **argv) {
     }
 
     for(int i = 0; i<queryFiles.size(); i++){
-        queryDataSet = "ReformattedQueries/" + queryFiles[i];
+        queryDataSet = "data/data/ReformattedQueries/" + queryFiles[i];
         totalTime = 0;
         for(int i = 0; i <=39; i++){  
-            string dataSet = "tweet4000000/" to_string(i) + ".txt";
+            string dataSet = "data/data/tweet4000000/" + to_string(i) + ".txt";
             Build_cBiK cBiK = Build_cBiK(dataSet);
             //cBiK.load_cBiK(dataSet);
             //cBiK.printMapa();
