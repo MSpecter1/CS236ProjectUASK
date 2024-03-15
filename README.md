@@ -13,7 +13,7 @@ The main file has different instructions to make the calls both to build the ind
 * [sdsl-lite](https://github.com/simongog/sdsl-lite), instruction to install is included, need to run in Linux.
 
 ### How to run cbik
-* In terminal, run make and then ./program
- Before, compiling and running uncomment or comment the push_back() functions (starting line 128) on vector queryFiles to run the queries that you desire.
+* In terminal, run make and then ./program.
+* Before, compiling and running uncomment or comment the push_back() functions (starting line 128) on vector queryFiles to run the queries that you desire.
 
 
