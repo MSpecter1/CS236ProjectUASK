@@ -1619,23 +1619,23 @@ public class OptQueryProcessor {
         }
 
 
-        public TweetWeightIndex[] get_pos_tweet_weight_index() {
-            TweetWeightIndex[] pos_twis = new TweetWeightIndex[pos_keywords.length];
+        // public TweetWeightIndex[] get_pos_tweet_weight_index() {
+        //     TweetWeightIndex[] pos_twis = new TweetWeightIndex[pos_keywords.length];
 
-            for(int i = 0 ; i < pos_twis.length ; i++)
-            {
-                if(word_tweet_weight_map.get(pos_keywords[i]) == null)
-                {
-                    pos_twis[i] = null;
-                }
-                else
-                {
-                    pos_twis[i] = new TweetWeightIndex(pos_keywords[i] , word_tweet_weight_map.get(pos_keywords[i]).get_indicator() , word_tweet_weight_map.get(pos_keywords[i]).get_max_weight());
-                }
-            }
+        //     for(int i = 0 ; i < pos_twis.length ; i++)
+        //     {
+        //         if(word_tweet_weight_map.get(pos_keywords[i]) == null)
+        //         {
+        //             pos_twis[i] = null;
+        //         }
+        //         else
+        //         {
+        //             pos_twis[i] = new TweetWeightIndex(pos_keywords[i] , word_tweet_weight_map.get(pos_keywords[i]).get_indicator() , word_tweet_weight_map.get(pos_keywords[i]).get_max_weight());
+        //         }
+        //     }
 
-            return pos_twis;
-        }
+        //     return pos_twis;
+        // }
 
         public SpatialBufferEntry read_leaf_nodes_objs(int node_id , boolean booleanKNN) throws IOException {
             if(!booleanKNN)
@@ -1662,81 +1662,77 @@ public class OptQueryProcessor {
                 input.close();
                 return new SpatialBufferEntry(id_to_spatial , file_size);
             }
-
-
-
-
         }
 
-        //TODO normalize
-        //TODO need to consider case when the negative keywords do not present
-        public Object[] get_pos_neg_tweet_weight(TweetWeightIndex[] pos_twis) throws IOException {
+        // //TODO normalize
+        // //TODO need to consider case when the negative keywords do not present
+        // public Object[] get_pos_neg_tweet_weight(TweetWeightIndex[] pos_twis) throws IOException {
 
-            TweetWeight[] pos_tws = new TweetWeight[pos_twis.length];
+        //     TweetWeight[] pos_tws = new TweetWeight[pos_twis.length];
 
-            //TODO either the pos or the neg could be none, indicating the get_word does not exists in the node
+        //     //TODO either the pos or the neg could be none, indicating the get_word does not exists in the node
 
-            for(int i = 0 ; i < pos_twis.length ; i++)
-            {
-                pos_tws[i] = ReadFromDisk.read_tweet_weights_using_index(pos_twis[i] , n.get_node_id() , kryo);
-            }
-
-
-            ArrayList<TweetWeightIndex[]> neg_twis_kws = new ArrayList<>();
-            for (String[] neg_phrase : neg_phrases)
-            {
-                TweetWeightIndex[] neg_twis = new TweetWeightIndex[neg_phrase.length];
-
-                boolean flag = true;
-                for (int i = 0; i < neg_phrase.length; i++)
-                {
-                    if (!word_tweet_weight_map.containsKey(neg_phrase[i]))
-                    {
-                        //neg_twis_kws.add(null);
-                        flag = false;
-                        break;
-                    }
-                    else
-                        {
-                        neg_twis[i] = new TweetWeightIndex(neg_phrase[i], word_tweet_weight_map.get(neg_phrase[i]).get_indicator(), word_tweet_weight_map.get(neg_phrase[i]).get_max_weight());
-                    }
-                }
-
-                if (flag) {
-                    neg_twis_kws.add(neg_twis);
-                }
-            }
-
-            //System.out.println(neg_twis_kws.size() + " this is the size ");
-            neg_twis_kws.sort(Comparator.comparingInt(o -> o.length));
-
-            //TweetWeight[] neg_tws = new TweetWeight[neg_twis_kws.size()];
-
-            ArrayList<HashSet[]> neg_tws = new ArrayList<>();
-
-            /*for(int i = 0 ; i < neg_twis_kws.size() ; i++)
-            {
-                TweetWeightIndex[] twi = neg_twis_kws.get(i);
-                TweetWeight[] tw = new TweetWeight[twi.length];
-                for(int j = 0 ; j < tw.length ; j++)
-                {
-                    tw[j] = ReadFromDisk.read_tweet_weights_using_index(twi[j] , n.get_node_id() , kryo);
-                }
-                neg_tws.add(tw);
-            }*/
-
-            for (TweetWeightIndex[] twi : neg_twis_kws) {
-                HashSet<Integer>[] hs = new HashSet[twi.length];
-                for (int j = 0; j < twi.length; j++) {
-                    HashSet<Integer> set = ReadFromDisk.read_tweet_hashset_using_index(twi[j], n.get_node_id(), kryo);
-                    hs[j] = set;
-                }
-                neg_tws.add(hs);
-            }
+        //     for(int i = 0 ; i < pos_twis.length ; i++)
+        //     {
+        //         pos_tws[i] = ReadFromDisk.read_tweet_weights_using_index(pos_twis[i] , n.get_node_id() , kryo);
+        //     }
 
 
-            return new Object[]{pos_tws , neg_tws};
-        }
+        //     ArrayList<TweetWeightIndex[]> neg_twis_kws = new ArrayList<>();
+        //     for (String[] neg_phrase : neg_phrases)
+        //     {
+        //         TweetWeightIndex[] neg_twis = new TweetWeightIndex[neg_phrase.length];
+
+        //         boolean flag = true;
+        //         for (int i = 0; i < neg_phrase.length; i++)
+        //         {
+        //             if (!word_tweet_weight_map.containsKey(neg_phrase[i]))
+        //             {
+        //                 //neg_twis_kws.add(null);
+        //                 flag = false;
+        //                 break;
+        //             }
+        //             else
+        //                 {
+        //                 neg_twis[i] = new TweetWeightIndex(neg_phrase[i], word_tweet_weight_map.get(neg_phrase[i]).get_indicator(), word_tweet_weight_map.get(neg_phrase[i]).get_max_weight());
+        //             }
+        //         }
+
+        //         if (flag) {
+        //             neg_twis_kws.add(neg_twis);
+        //         }
+        //     }
+
+        //     //System.out.println(neg_twis_kws.size() + " this is the size ");
+        //     neg_twis_kws.sort(Comparator.comparingInt(o -> o.length));
+
+        //     //TweetWeight[] neg_tws = new TweetWeight[neg_twis_kws.size()];
+
+        //     ArrayList<HashSet[]> neg_tws = new ArrayList<>();
+
+        //     /*for(int i = 0 ; i < neg_twis_kws.size() ; i++)
+        //     {
+        //         TweetWeightIndex[] twi = neg_twis_kws.get(i);
+        //         TweetWeight[] tw = new TweetWeight[twi.length];
+        //         for(int j = 0 ; j < tw.length ; j++)
+        //         {
+        //             tw[j] = ReadFromDisk.read_tweet_weights_using_index(twi[j] , n.get_node_id() , kryo);
+        //         }
+        //         neg_tws.add(tw);
+        //     }*/
+
+        //     for (TweetWeightIndex[] twi : neg_twis_kws) {
+        //         HashSet<Integer>[] hs = new HashSet[twi.length];
+        //         for (int j = 0; j < twi.length; j++) {
+        //             HashSet<Integer> set = ReadFromDisk.read_tweet_hashset_using_index(twi[j], n.get_node_id(), kryo);
+        //             hs[j] = set;
+        //         }
+        //         neg_tws.add(hs);
+        //     }
+
+
+        //     return new Object[]{pos_tws , neg_tws};
+        // }
 
 
         public Object[] get_hashset() throws IOException {
@@ -1845,11 +1841,7 @@ public class OptQueryProcessor {
 
             set_maps.sort(Comparator.comparingInt(o -> o.keySet().size()));
 
-
             return new Object[]{overall , set_maps};
-
-
-
         }
 
 
@@ -2496,80 +2488,80 @@ public class OptQueryProcessor {
 
 
 
-        public double add_to_pq(PriorityQueue<ResultTweet> local_topk , int tid , TweetWeight[] pos_term_weights ,  double alpha , int k , boolean add_spatial)
-        {
-            /*if(tid == 2610244)
-            {
-                System.out.println("this entry considered");
-            }*/
-            double total_score = aggregate_score(tid , pos_term_weights , alpha , add_spatial);
-            if(total_score == Double.MIN_VALUE)
-            {
-                return total_score;
-            }
+        // public double add_to_pq(PriorityQueue<ResultTweet> local_topk , int tid , TweetWeight[] pos_term_weights ,  double alpha , int k , boolean add_spatial)
+        // {
+        //     /*if(tid == 2610244)
+        //     {
+        //         System.out.println("this entry considered");
+        //     }*/
+        //     double total_score = aggregate_score(tid , pos_term_weights , alpha , add_spatial);
+        //     if(total_score == Double.MIN_VALUE)
+        //     {
+        //         return total_score;
+        //     }
 
-            if(add_spatial)
-            {
-                ResultTweet rt = new ResultTweet(tid , total_score);
-                if(local_topk.size() < k )
-                {
-                    local_topk.add(rt);
-                }
+        //     if(add_spatial)
+        //     {
+        //         ResultTweet rt = new ResultTweet(tid , total_score);
+        //         if(local_topk.size() < k )
+        //         {
+        //             local_topk.add(rt);
+        //         }
 
-                else
-                {
-                    double kth = local_topk.peek().get_score();
-                    if(total_score > kth)
-                    {
-                        local_topk.remove();
-                        local_topk.add(rt);
-                    }
-                }
-                return local_topk.peek().get_score();
-            }
+        //         else
+        //         {
+        //             double kth = local_topk.peek().get_score();
+        //             if(total_score > kth)
+        //             {
+        //                 local_topk.remove();
+        //                 local_topk.add(rt);
+        //             }
+        //         }
+        //         return local_topk.peek().get_score();
+        //     }
 
-            else
-            {
-                return total_score;
-            }
-        }
+        //     else
+        //     {
+        //         return total_score;
+        //     }
+        // }
 
         //TODO : need to consider the textual and spatial normalizer
-        public double aggregate_score(int tid , TweetWeight[] pos_term_weights ,  double alpha, boolean add_spatial)
-        {
-            double t_score = 0;
-            boolean flag = false;
-            for(TweetWeight tw : pos_term_weights)
-            {
-                if(tw != null)
-                {
-                    if(tw.get_hash().containsKey(tid))
-                    {
-                        flag = true;
-                        t_score += tw.get_hash().get(tid);
-                    }
-                }
-            }
+    //     public double aggregate_score(int tid , TweetWeight[] pos_term_weights ,  double alpha, boolean add_spatial)
+    //     {
+    //         double t_score = 0;
+    //         boolean flag = false;
+    //         for(TweetWeight tw : pos_term_weights)
+    //         {
+    //             if(tw != null)
+    //             {
+    //                 if(tw.get_hash().containsKey(tid))
+    //                 {
+    //                     flag = true;
+    //                     t_score += tw.get_hash().get(tid);
+    //                 }
+    //             }
+    //         }
 
-            if(!flag)
-            {
-                return Double.MIN_VALUE;
-            }
+    //         if(!flag)
+    //         {
+    //             return Double.MIN_VALUE;
+    //         }
 
-            if(add_spatial)
-            {
-                double s_score = (alpha == 0 ? 0 : n.get_spatial_score_by_id(tid , lat , lon , alpha));
-                return alpha * s_score + (1 - alpha) * t_score;
-            }
+    //         if(add_spatial)
+    //         {
+    //             double s_score = (alpha == 0 ? 0 : n.get_spatial_score_by_id(tid , lat , lon , alpha));
+    //             return alpha * s_score + (1 - alpha) * t_score;
+    //         }
 
-            else
-            {
-                return (1 - alpha) * t_score;
-            }
-        }
+    //         else
+    //         {
+    //             return (1 - alpha) * t_score;
+    //         }
+    //     }
+
+
+
     }
-
-
-
 
 }

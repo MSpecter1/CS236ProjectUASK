@@ -1,0 +1,112 @@
+        ==== var_andkws_boolean_range(pos_kws) ====
+-------------------------------------------------
+exploring how the number of and kws affect query time
+the following is POWER results
+num of and words is 1 the average runtime is 7
+Saved
+num of and words is 2 the average runtime is 3
+Saved
+num of and words is 3 the average runtime is 3
+Saved
+num of and words is 4 the average runtime is 2
+Saved
+
+
+        ==== var_orkws_boolean_range(or_kws) ====
+-------------------------------------------------
+exploring how the number of or kws affect query time
+the following is POWER results
+num of or words is 1 the average runtime is 3
+Saved
+num of or words is 2 the average runtime is 3
+Saved
+num of or words is 3 the average runtime is 4
+Saved
+num of or words is 4 the average runtime is 5
+Saved
+
+
+        ==== var_notseq_boolean_range(neg_seq) ====
+-------------------------------------------------
+exploring how the number of neg kws affect query time
+the following is POWER results
+negative sequence len is  1 the average runtime is 3
+Saved
+negative sequence len is  2 the average runtime is 4
+Saved
+negative sequence len is  3 the average runtime is 3
+Saved
+negative sequence len is  4 the average runtime is 3
+Saved
+
+
+        ==== var_notNumeq_boolean_range(neg_num) ====
+-------------------------------------------------
+exploring how the number of neg kws affect query time
+the following is POWER results
+negative sequence number is  1 the average runtime is 4
+Saved
+negative sequence number is  2 the average runtime is 7
+Saved
+negative sequence number is  3 the average runtime is 9
+Saved
+negative sequence number is  4 the average runtime is 12
+Saved
+
+
+        ==== var_k_boolean_range(ks) ====
+-------------------------------------------------
+exploring how the k affect query time
+the following is POWER results
+current k is 10 the average runtime is 4
+Saved
+current k is 30 the average runtime is 3
+Saved
+current k is 50 the average runtime is 3
+Saved
+current k is 70 the average runtime is 3
+Saved
+current k is 90 the average runtime is 3
+Saved
+
+
+        ==== var_datasize_boolean_range(data_sizes) ====
+-------------------------------------------------
+exploring how the size of dataset affect query time
+the following is POWER
+current dataset is 2000000 the average runtime is 2
+Saved
+current dataset is 4000000 the average runtime is 4
+Saved
+
+
+        ==== var_width_boolean_range(width) ====
+-------------------------------------------------
+exploring how the size of the width of the range affect query time
+the following is POWER results
+current width is 10 the average runtime is 3
+Saved
+current width is 20 the average runtime is 4
+Saved
+current width is 30 the average runtime is 4
+Saved
+current width is 40 the average runtime is 4
+Saved
+current width is 50 the average runtime is 4
+Saved
+
+
+        ==== var_height_boolean_range(height) ====
+-------------------------------------------------
+exploring how the size of the height of the range affect query time
+the following is POWER results
+current height is 10 the average runtime is 5
+Saved
+current height is 20 the average runtime is 4
+Saved
+current height is 30 the average runtime is 3
+Saved
+current height is 40 the average runtime is 3
+Saved
+current height is 50 the average runtime is 3
+Saved
