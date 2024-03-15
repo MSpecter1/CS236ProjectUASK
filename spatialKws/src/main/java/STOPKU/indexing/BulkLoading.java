@@ -127,7 +127,7 @@ public class BulkLoading {
         var_orkws_boolean_range(or_kws);
         System.out.println("\t==== var_notseq_boolean_range(neg_seq) ====");
         var_notseq_boolean_range(neg_seq);
-        System.out.println("\t==== var_notNumeq_boolean_range(neg_num) ====");
+        System.out.println("\t==== var_notNum_boolean_range(neg_num) ====");
         var_notNum_boolean_range(neg_num);
         System.out.println("\t==== var_k_boolean_range(ks) ====");
         var_k_boolean_range(ks);
